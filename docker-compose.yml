@@ -1,0 +1,19 @@
+services:
+  paddock:
+    build: .
+    image: paddock:latest
+    ports:
+      - "8080:8080"
+    environment:
+      # Ollama host as reachable from this container:
+      #   - separate docker network: http://<ollama-host>:11434
+      #   - macOS/Windows:           http://host.docker.internal:11434
+      #   - host networking:         http://127.0.0.1:11434
+      OLLAMA_URL: http://host.docker.internal:11434
+      # PADDOK_GLOBAL_CONCURRENCY: "4"
+      # PADDOK_MODEL_CONCURRENCY: "1"
+      # PADDOK_MAX_QUEUE_PER_MODEL: "32"
+      # PADDOK_QUEUE_WAIT_TIMEOUT_SECS: "120"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
